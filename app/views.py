@@ -41,9 +41,12 @@ def login():
         return redirect(url_for('index'))
     form = LoginForm()
     print app.config['OPENID_PROVIDERS']
+    
     if form.validate_on_submit():
+        
         session['remember_me'] = form.remember_me.data
-        return oid.try_login(form.openid.data, ask_for=['nickname', 'email'])
+        return oid.try_login(form.openid.data, ask_for=['nickname', 'email', 'username', 'password'])
+        
     return render_template('login.html', 
                            title='Sign In',
                            form=form,
