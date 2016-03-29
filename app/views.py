@@ -36,10 +36,19 @@ def before_request():
 ###
 @app.route('/login', methods=['GET', 'POST'])
 @oid.loginhandler
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-    if g.user is not None and g.user.is_authenticated():
-        return redirect(url_for('index'))
     form = LoginForm()
+<<<<<<< HEAD
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        if user is not None and user.password_hash == form.password.data:
+            login_user(user, form.remember_me.data)
+            flash('Successfully logged in!')
+            return redirect(request.args.get('next') or url_for('home'))
+        flash('Invalid username or password.')
+    return render_template('login.html', form=form)
+=======
     print app.config['OPENID_PROVIDERS']
     
     if form.validate_on_submit():
@@ -51,6 +60,7 @@ def login():
                            title='Sign In',
                            form=form,
                            providers=app.config['OPENID_PROVIDERS'])
+>>>>>>> 05fc58c38d0cfa975223578669db0cf70af2dfbd
 @app.route('/')
 def home():
     """Render website's home page."""
